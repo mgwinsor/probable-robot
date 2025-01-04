@@ -1,9 +1,10 @@
 from contextlib import contextmanager
 from typing import Generator
 
-from models import Base
 from sqlalchemy import Engine, create_engine
 from sqlalchemy.orm import Session, sessionmaker
+
+from app.models import Base
 
 
 def init_db(db_url: str = "sqlite:///./portfolio.db") -> Engine:

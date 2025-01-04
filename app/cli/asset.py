@@ -1,6 +1,7 @@
 import typer
-from controllers import AssetController
-from database import get_db_session
+
+from app.controllers import AssetController
+from app.database import get_db_session
 
 app = typer.Typer()
 

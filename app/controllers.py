@@ -1,6 +1,7 @@
-from models import Portfolio
 from sqlalchemy.orm import Session
-from views import PortfolioView
+
+from app.models import Portfolio
+from app.views import PortfolioView
 
 
 class AssetController:

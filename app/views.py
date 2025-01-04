@@ -1,5 +1,6 @@
-from models import Asset
 from rich.console import Console
+
+from app.models import Asset
 
 
 class PortfolioView:
