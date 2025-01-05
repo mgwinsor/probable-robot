@@ -101,7 +101,7 @@ wheels = [
 [[package]]
 name = "probable-robot"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "sqlalchemy" },
     { name = "typer" },
