@@ -15,7 +15,9 @@ def add(symbol: str, name: str, type: str) -> None:
 
 @app.command()
 def remove(symbol: str) -> None:
-    print(f"deleted {symbol}")
+    with get_db_session() as db:
+        controller = AssetController(db)
+        controller.remove_asset(symbol)
 
 
 if __name__ == "__main__":

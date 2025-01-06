@@ -23,3 +23,10 @@ class Portfolio:
         db_asset = Asset(symbol=symbol, name=name, type=type)
         self.db.add(db_asset)
         return db_asset
+
+    def remove(self, symbol: str) -> Asset | None:
+        asset = self.db.query(Asset).filter(Asset.symbol == symbol).first()
+        if asset:
+            self.db.delete(asset)
+            self.db.commit()
+        return asset
