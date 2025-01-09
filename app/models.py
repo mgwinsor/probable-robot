@@ -1,13 +1,20 @@
 from datetime import date, datetime
 from decimal import Decimal
+from enum import Enum
 
-from sqlalchemy import (Date, DateTime, ForeignKey, Integer, Numeric, String,
-                        func)
+from sqlalchemy import Date, DateTime
+from sqlalchemy import Enum as SqlEnum
+from sqlalchemy import ForeignKey, Integer, Numeric, String, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 
 
 class Base(DeclarativeBase):
     pass
+
+
+class TransactionType(str, Enum):
+    BUY = "buy"
+    SELL = "sell"
 
 
 class Asset(Base):
@@ -37,7 +44,10 @@ class Transaction(Base):
         index=True,
     )
     lot_id: Mapped[int] = mapped_column(Integer)
-    transaction_type: Mapped[str] = mapped_column(String)
+    transaction_type: Mapped[TransactionType] = mapped_column(
+        SqlEnum(TransactionType),
+        nullable=False,
+    )
     quantity: Mapped[Decimal] = mapped_column(Numeric(precision=18, scale=8))
     remaining_quantity: Mapped[Decimal] = mapped_column(Numeric(precision=18, scale=8))
     price: Mapped[Decimal] = mapped_column(Numeric(precision=10, scale=2))
