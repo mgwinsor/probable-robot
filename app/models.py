@@ -1,4 +1,8 @@
-from sqlalchemy import Integer, String
+from datetime import date, datetime
+from decimal import Decimal
+
+from sqlalchemy import (Date, DateTime, ForeignKey, Integer, Numeric, String,
+                        func)
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 
 
@@ -9,10 +13,45 @@ class Base(DeclarativeBase):
 class Asset(Base):
     __tablename__ = "assets"
 
-    asset_id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
     symbol: Mapped[str] = mapped_column(String, unique=True)
     name: Mapped[str] = mapped_column(String)
-    type: Mapped[str] = mapped_column(String)
+    asset_type: Mapped[str] = mapped_column(String)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        onupdate=func.now(),
+        nullable=True,
+    )
+
+
+class Transaction(Base):
+    __tablename__ = "transactions"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    asset_id: Mapped[int] = mapped_column(
+        ForeignKey("assets.asset_id", ondelete="RESTRICT"),
+        index=True,
+    )
+    lot_id: Mapped[int] = mapped_column(Integer)
+    transaction_type: Mapped[str] = mapped_column(String)
+    quantity: Mapped[Decimal] = mapped_column(Numeric(precision=18, scale=8))
+    remaining_quantity: Mapped[Decimal] = mapped_column(Numeric(precision=18, scale=8))
+    price: Mapped[Decimal] = mapped_column(Numeric(precision=10, scale=2))
+    fee: Mapped[Decimal] = mapped_column(Numeric(precision=10, scale=2))
+    transaction_date: Mapped[date] = mapped_column(Date, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        onupdate=func.now(),
+        nullable=True,
+    )
 
 
 class Portfolio:
