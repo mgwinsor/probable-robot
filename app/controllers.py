@@ -9,8 +9,8 @@ class AssetController:
         self.portfolio = Portfolio(db)
         self.view = PortfolioView()
 
-    def add_asset(self, symbol: str, name: str, type: str) -> None:
-        asset = self.portfolio.add(symbol, name, type)
+    def add_asset(self, symbol: str, name: str, asset_type: str) -> None:
+        asset = self.portfolio.add(symbol, name, asset_type)
         self.view.show_asset_added(asset)
 
     def remove_asset(self, symbol: str) -> None:

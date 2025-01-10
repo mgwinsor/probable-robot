@@ -1,6 +1,7 @@
 from datetime import date, datetime
 from decimal import Decimal
 from enum import Enum
+from typing import Any
 
 from sqlalchemy import Date, DateTime
 from sqlalchemy import Enum as SqlEnum
@@ -40,7 +41,7 @@ class Transaction(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     asset_id: Mapped[int] = mapped_column(
-        ForeignKey("assets.asset_id", ondelete="RESTRICT"),
+        ForeignKey("assets.id", ondelete="RESTRICT"),
         index=True,
     )
     lot_id: Mapped[int] = mapped_column(Integer)
@@ -50,8 +51,10 @@ class Transaction(Base):
     )
     quantity: Mapped[Decimal] = mapped_column(Numeric(precision=18, scale=8))
     remaining_quantity: Mapped[Decimal] = mapped_column(Numeric(precision=18, scale=8))
-    price: Mapped[Decimal] = mapped_column(Numeric(precision=10, scale=2))
+    price_per_unit: Mapped[Decimal] = mapped_column(Numeric(precision=10, scale=2))
     fee: Mapped[Decimal] = mapped_column(Numeric(precision=10, scale=2))
+    cost_basis: Mapped[Decimal] = mapped_column(Numeric(precision=10, scale=2))
+    net_proceeds: Mapped[Decimal] = mapped_column(Numeric(precision=10, scale=2))
     transaction_date: Mapped[date] = mapped_column(Date, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
@@ -63,13 +66,23 @@ class Transaction(Base):
         nullable=True,
     )
 
+    def __init__(self, **kw: Any):
+        super().__init__(**kw)
+        self.remaining_quantity = self.quantity
+        if self.transaction_type == TransactionType.BUY:
+            self.cost_basis = (self.quantity * self.price_per_unit) + self.fee
+            self.net_proceeds = Decimal(0)
+        else:
+            self.cost_basis = Decimal(0)
+            self.net_proceeds = (self.quantity * self.price_per_unit) - self.fee
+
 
 class Portfolio:
     def __init__(self, db: Session) -> None:
         self.db = db
 
-    def add(self, symbol: str, name: str, type: str) -> Asset:
-        db_asset = Asset(symbol=symbol, name=name, type=type)
+    def add(self, symbol: str, name: str, asset_type: str) -> Asset:
+        db_asset = Asset(symbol=symbol, name=name, asset_type=asset_type)
         self.db.add(db_asset)
         return db_asset
 
