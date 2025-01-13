@@ -92,3 +92,7 @@ class Portfolio:
             self.db.delete(asset)
             self.db.commit()
         return asset
+
+    def transaction_add(self) -> Transaction:
+        db_transaction = Transaction()
+        return db_transaction

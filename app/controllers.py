@@ -1,6 +1,9 @@
+from datetime import date
+from decimal import Decimal
+
 from sqlalchemy.orm import Session
 
-from app.models import Portfolio
+from app.models import Portfolio, TransactionType
 from app.views import PortfolioView
 
 
@@ -16,3 +19,15 @@ class AssetController:
     def remove_asset(self, symbol: str) -> None:
         asset = self.portfolio.remove(symbol)
         self.view.show_asset_removed(asset, symbol)
+
+    def add_transaction(
+        self,
+        symbol: str,
+        lot_id: int,
+        transaction_type: TransactionType,
+        quantity: Decimal,
+        price_per_unit: Decimal,
+        fee: Decimal,
+        transaction_date: date,
+    ) -> None:
+        pass
