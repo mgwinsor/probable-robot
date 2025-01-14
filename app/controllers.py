@@ -20,6 +20,10 @@ class AssetController:
         asset = self.portfolio.remove(symbol)
         self.view.show_asset_removed(asset, symbol)
 
+    def list_asset(self, symbol: str) -> None:
+        asset = self.portfolio.list_asset(symbol)
+        self.view.show_asset_listed(asset, symbol)
+
     def add_transaction(
         self,
         symbol: str,
@@ -30,4 +34,4 @@ class AssetController:
         fee: Decimal,
         transaction_date: date,
     ) -> None:
-        pass
+        asset = self.portfolio

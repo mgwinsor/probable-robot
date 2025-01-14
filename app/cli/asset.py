@@ -20,5 +20,12 @@ def remove(symbol: str) -> None:
         controller.remove_asset(symbol)
 
 
+@app.command()
+def list(symbol: str) -> None:
+    with get_db_session() as db:
+        controller = AssetController(db)
+        controller.list_asset(symbol)
+
+
 if __name__ == "__main__":
     app()

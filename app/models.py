@@ -93,6 +93,10 @@ class Portfolio:
             self.db.commit()
         return asset
 
+    def list_asset(self, symbol: str) -> Asset | None:
+        asset = self.db.query(Asset).filter(Asset.symbol == symbol).first()
+        return asset
+
     def transaction_add(self) -> Transaction:
         db_transaction = Transaction()
         return db_transaction

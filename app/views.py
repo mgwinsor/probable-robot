@@ -15,3 +15,10 @@ class PortfolioView:
             self.console.print(f"Removed {asset.name} from your asset list!")
         else:
             self.console.print(f"No asset found with symbol {symbol}.")
+
+    def show_asset_listed(self, asset: Asset | None, symbol: str) -> None:
+        if asset:
+            output = f"{asset.symbol}\t{asset.name}\t{asset.asset_type}"
+            self.console.print(output)
+        else:
+            self.console.print(f"No asset found with symbol {symbol}.")
