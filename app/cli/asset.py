@@ -1,3 +1,5 @@
+from typing import Annotated
+
 import typer
 
 from app.controllers import AssetController
@@ -21,10 +23,13 @@ def remove(symbol: str) -> None:
 
 
 @app.command()
-def list(symbol: str) -> None:
+def list(symbol: Annotated[str, typer.Argument(help="Asset symbol")] = "all") -> None:
     with get_db_session() as db:
         controller = AssetController(db)
-        controller.list_asset(symbol)
+        if symbol == "all":
+            controller.list_all_assets()
+        else:
+            controller.list_asset(symbol)
 
 
 if __name__ == "__main__":

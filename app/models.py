@@ -97,6 +97,10 @@ class Portfolio:
         asset = self.db.query(Asset).filter(Asset.symbol == symbol).first()
         return asset
 
+    def list_all_assets(self):
+        assets = self.db.query(Asset).all()
+        return assets
+
     def transaction_add(self) -> Transaction:
         db_transaction = Transaction()
         return db_transaction

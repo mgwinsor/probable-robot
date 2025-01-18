@@ -22,3 +22,8 @@ class PortfolioView:
             self.console.print(output)
         else:
             self.console.print(f"No asset found with symbol {symbol}.")
+
+    def show_all_assets(self, assets: list[Asset]) -> None:
+        for asset in assets:
+            output = f"{asset.symbol}\t{asset.name}\t{asset.asset_type}"
+            self.console.print(output)
