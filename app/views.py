@@ -1,6 +1,6 @@
 from rich.console import Console
 
-from app.models import Asset
+from app.models import Asset, Transaction
 
 
 class PortfolioView:
@@ -27,3 +27,6 @@ class PortfolioView:
         for asset in assets:
             output = f"{asset.symbol}\t{asset.name}\t{asset.asset_type}"
             self.console.print(output)
+
+    def show_transaction_added(self, transaction: Transaction) -> None:
+        self.console.print(f"Added {transaction.lot_id} to your transactions list!")

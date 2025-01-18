@@ -101,6 +101,28 @@ class Portfolio:
         assets = self.db.query(Asset).all()
         return assets
 
-    def transaction_add(self) -> Transaction:
-        db_transaction = Transaction()
+    def transaction_add(
+        self,
+        symbol,
+        lot_id,
+        transaction_type,
+        quantity,
+        price_per_unit,
+        fee,
+        transaction_date,
+    ) -> Transaction:
+        asset = self.list_asset(symbol)
+        if asset is None:
+            raise ValueError(f"{symbol} not found in asset list.")
+
+        db_transaction = Transaction(
+            asset_id=asset.id,
+            lot_id=lot_id,
+            transaction_type=transaction_type,
+            quantity=quantity,
+            price_per_unit=price_per_unit,
+            fee=fee,
+            transaction_date=transaction_date,
+        )
+        self.db.add(db_transaction)
         return db_transaction

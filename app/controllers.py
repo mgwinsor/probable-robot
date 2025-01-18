@@ -38,4 +38,13 @@ class AssetController:
         fee: Decimal,
         transaction_date: date,
     ) -> None:
-        asset = self.portfolio.list_asset(symbol)
+        transaction = self.portfolio.transaction_add(
+            symbol,
+            lot_id,
+            transaction_type,
+            quantity,
+            price_per_unit,
+            fee,
+            transaction_date,
+        )
+        self.view.show_transaction_added(transaction)
