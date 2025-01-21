@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
 from sqlalchemy import DateTime, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -31,7 +31,11 @@ class PurchaseLot(Base):
     quantity: Mapped[int] = mapped_column(Integer, nullable=False)  # In base units
     cost_per_unit: Mapped[int] = mapped_column(Integer, nullable=False)  # In cents
     transaction_fees: Mapped[int] = mapped_column(Integer, nullable=False)  # In cents
-    remaining_quantity: Mapped[int] = mapped_column(Integer, nullable=False)
+    remaining_quantity: Mapped[int] = mapped_column(  # In base units
+        Integer,
+        nullable=False,
+        default=None,
+    )
     income_event_id: Mapped[int] = mapped_column(ForeignKey("income_events.event_id"))
 
     # Relationships
@@ -43,3 +47,8 @@ class PurchaseLot(Base):
         back_populates="purchase_lots"
     )
     transfers: Mapped[list["Wallet"]] = relationship(back_populates="lot")
+
+    def __init__(self, **kw: Any):
+        super().__init__(**kw)
+        if self.remaining_quantity is None:
+            self.remaining_quantity = self.quantity
