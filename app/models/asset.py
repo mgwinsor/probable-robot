@@ -19,6 +19,7 @@ class Asset(Base):
     decimal_places: Mapped[int] = mapped_column(Integer, nullable=False)
     current_unit_price: Mapped[int] = mapped_column(Integer)
 
+    # Relationships
     purchase_lots: Mapped[list["PurchaseLot"]] = relationship(back_populates="asset")
     income_events: Mapped[list["IncomeEvent"]] = relationship(back_populates="asset")
     sales: Mapped[list["SalesPl"]] = relationship(back_populates="asset")

@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Optional
 
-from sqlalchemy import Integer, String
+from sqlalchemy import Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models import Base
@@ -17,8 +17,9 @@ class Wallet(Base):
     )
     address: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     name: Mapped[Optional[str]] = mapped_column(String)
-    description: Mapped[Optional[str]] = mapped_column(String)
+    description: Mapped[Optional[str]] = mapped_column(Text)
 
+    # Relationships
     purchase_lots_current: Mapped[list["PurchaseLot"]] = relationship(
         back_populates="current_wallet",
         foreign_keys="[PurchaseLot.current_wallet_id]",
