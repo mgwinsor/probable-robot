@@ -1,3 +1,5 @@
+from decimal import ROUND_HALF_UP, Decimal
+
 from sqlalchemy.orm import Session
 
 from app.models import Asset
@@ -12,13 +14,19 @@ class PortfolioManager:
         symbol: str,
         name: str,
         decimal_places: int,
-        current_price: int | None,
+        current_price: Decimal | None,
     ) -> Asset | None:
+        # Convert current_price from USD to pennies
+        current_price_int: int | None = None
+        if current_price is not None:
+            current_price = current_price.quantize(Decimal("0.01"), ROUND_HALF_UP) * 100
+            current_price_int = int(current_price)
+
         db_asset = Asset(
             symbol=symbol,
             name=name,
             decimal_places=decimal_places,
-            current_unit_price=current_price,
+            current_unit_price=current_price_int,
         )
         check_exists = self.db.query(Asset).filter(Asset.symbol == symbol).first()
         if check_exists is None:

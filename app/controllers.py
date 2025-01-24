@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from sqlalchemy.orm import Session
 
 from app.models import PortfolioManager
@@ -14,7 +16,7 @@ class AssetController:
         symbol: str,
         name: str,
         decimal_places: int,
-        current_price: int | None,
+        current_price: Decimal | None,
     ) -> None:
         asset = self.portfolio.add(symbol, name, decimal_places, current_price)
         self.view.show_asset_added(symbol, asset)
