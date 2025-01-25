@@ -1,6 +1,8 @@
 from typer.testing import CliRunner
 
+from app.database import get_db_session
 from app.main import app
+from app.models import Asset
 
 runner = CliRunner()
 
@@ -34,7 +36,11 @@ def test_asset_add_decimal():
     )
     assert result.exit_code == 0
     assert "Added Bitcoin to your asset list!" in result.stdout
-    # TODO: query database to check rounded values
+
+    with get_db_session() as db:
+        asset = db.query(Asset).filter(Asset.symbol == "BTC").first()
+        assert asset is not None
+        assert asset.current_unit_price == 3013
 
 
 # def test_asset_remove():
