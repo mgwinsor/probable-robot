@@ -52,5 +52,22 @@ def list(symbol: Annotated[str, typer.Argument(help="Asset symbol")] = "all") ->
             controller.list_asset(symbol)
 
 
+@app.command()
+def update(
+    symbol: str,
+    price: Annotated[str, typer.Option(help="Current asset price in USD")],
+) -> None:
+    try:
+        price_str = price.strip().replace("$", "").replace(",", "")
+        price_decimal = Decimal(price_str)
+    except (ValueError, InvalidOperation):
+        typer.echo(f"Invalid price format: {price}.")
+        raise typer.Exit(1)
+
+    with get_db_session() as db:
+        controller = AssetController(db)
+        controller.update_asset(symbol, price_decimal)
+
+
 if __name__ == "__main__":
     app()

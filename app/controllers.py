@@ -33,6 +33,10 @@ class AssetController:
         assets = self.portfolio.list_all_assets()
         self.view.show_all_assets(assets)
 
+    def update_asset(self, symbol: str, new_price: Decimal):
+        asset = self.portfolio.update_asset(symbol, new_price)
+        self.view.show_updated_asset(asset, symbol)
+
     # def add_transaction(
     #     self,
     #     symbol: str,

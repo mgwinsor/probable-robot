@@ -70,3 +70,16 @@ def test_missing_asset_remove():
     result = runner.invoke(app, ["asset", "remove", "BTC"])
     assert result.exit_code == 0
     assert "No asset found with symbol BTC" in result.stdout
+
+
+def test_asset_update():
+    _ = runner.invoke(app, ["asset", "add", "BTC", "Bitcoin", "18", "--price", "3000"])
+    result = runner.invoke(app, ["asset", "update", "BTC", "--price", "4000"])
+    assert result.exit_code == 0
+    assert "4000" in result.stdout
+
+
+def test_asset_update_missing_symbol():
+    result = runner.invoke(app, ["asset", "update", "BTC", "--price", "4000"])
+    assert result.exit_code == 0
+    assert "No asset found with symbol BTC." in result.stdout

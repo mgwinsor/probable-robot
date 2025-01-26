@@ -19,8 +19,7 @@ class PortfolioManager:
         # Convert current_price from USD to pennies
         current_price_int: int | None = None
         if current_price is not None:
-            current_price = current_price.quantize(Decimal("0.01"), ROUND_HALF_UP) * 100
-            current_price_int = int(current_price)
+            current_price_int = self._convert_price_decimal_to_int(current_price)
 
         db_asset = Asset(
             symbol=symbol,
@@ -48,6 +47,20 @@ class PortfolioManager:
     def list_all_assets(self):
         assets = self.db.query(Asset).all()
         return assets
+
+    def update_asset(self, symbol: str, price: Decimal) -> Asset | None:
+        new_price = self._convert_price_decimal_to_int(price)
+
+        asset = self.db.query(Asset).filter(Asset.symbol == symbol).first()
+        print(f"Here :{asset}")
+        if asset:
+            asset.current_unit_price = new_price
+            self.db.commit()
+            return asset
+        return None
+
+    def _convert_price_decimal_to_int(self, price: Decimal) -> int:
+        return int(price.quantize(Decimal("0.01"), ROUND_HALF_UP) * 100)
 
     # def transaction_add(
     #     self,
