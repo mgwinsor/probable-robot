@@ -59,14 +59,14 @@ def test_asset_list_all():
     assert "ETH" in result.stdout
 
 
-# def test_asset_remove():
-#     _ = runner.invoke(app, ["asset", "add", "BTC", "Bitcoin", "crypto"])
-#     result = runner.invoke(app, ["asset", "remove", "BTC"])
-#     assert result.exit_code == 0
-#     assert "Removed Bitcoin from your asset list!" in result.stdout
-#
-#
-# def test_missing_asset_remove():
-#     result = runner.invoke(app, ["asset", "remove", "BTC"])
-#     assert result.exit_code == 0
-#     assert "No asset found with symbol BTC" in result.stdout
+def test_asset_remove():
+    _ = runner.invoke(app, ["asset", "add", "BTC", "Bitcoin", "18", "--price", "3000"])
+    result = runner.invoke(app, ["asset", "remove", "BTC"])
+    assert result.exit_code == 0
+    assert "Removed Bitcoin from your asset list!" in result.stdout
+
+
+def test_missing_asset_remove():
+    result = runner.invoke(app, ["asset", "remove", "BTC"])
+    assert result.exit_code == 0
+    assert "No asset found with symbol BTC" in result.stdout

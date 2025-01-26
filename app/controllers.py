@@ -21,10 +21,10 @@ class AssetController:
         asset = self.portfolio.add(symbol, name, decimal_places, current_price)
         self.view.show_asset_added(symbol, asset)
 
-    # def remove_asset(self, symbol: str) -> None:
-    #     asset = self.portfolio.remove(symbol)
-    #     self.view.show_asset_removed(asset, symbol)
-    #
+    def remove_asset(self, symbol: str) -> None:
+        asset = self.portfolio.remove(symbol)
+        self.view.show_asset_removed(asset, symbol)
+
     def list_asset(self, symbol: str) -> None:
         asset = self.portfolio.list_asset(symbol)
         self.view.show_asset_listed(asset, symbol)

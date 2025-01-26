@@ -34,13 +34,13 @@ class PortfolioManager:
             return db_asset
         return None
 
-    # def remove(self, symbol: str) -> Asset | None:
-    #     asset = self.db.query(Asset).filter(Asset.symbol == symbol).first()
-    #     if asset:
-    #         self.db.delete(asset)
-    #         self.db.commit()
-    #     return asset
-    #
+    def remove(self, symbol: str) -> Asset | None:
+        asset = self.db.query(Asset).filter(Asset.symbol == symbol).first()
+        if asset:
+            self.db.delete(asset)
+            self.db.commit()
+        return asset
+
     def list_asset(self, symbol: str) -> Asset | None:
         asset = self.db.query(Asset).filter(Asset.symbol == symbol).first()
         return asset

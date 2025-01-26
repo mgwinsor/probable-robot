@@ -15,11 +15,11 @@ class PortfolioView:
         else:
             self.console.print(f"{symbol} already added!")
 
-    # def show_asset_removed(self, asset: Asset | None, symbol: str) -> None:
-    #     if asset:
-    #         self.console.print(f"Removed {asset.name} from your asset list!")
-    #     else:
-    #         self.console.print(f"No asset found with symbol {symbol}.")
+    def show_asset_removed(self, asset: Asset | None, symbol: str) -> None:
+        if asset:
+            self.console.print(f"Removed {asset.name} from your asset list!")
+        else:
+            self.console.print(f"No asset found with symbol {symbol}.")
 
     def show_asset_listed(self, asset: Asset | None, symbol: str) -> None:
         if asset:

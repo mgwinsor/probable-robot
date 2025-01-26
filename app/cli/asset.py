@@ -35,13 +35,13 @@ def add(
             controller.add_asset(symbol, name, decimals, None)
 
 
-# @app.command()
-# def remove(symbol: str) -> None:
-#     with get_db_session() as db:
-#         controller = AssetController(db)
-#         controller.remove_asset(symbol)
-#
-#
+@app.command()
+def remove(symbol: str) -> None:
+    with get_db_session() as db:
+        controller = AssetController(db)
+        controller.remove_asset(symbol)
+
+
 @app.command()
 def list(symbol: Annotated[str, typer.Argument(help="Asset symbol")] = "all") -> None:
     with get_db_session() as db:
