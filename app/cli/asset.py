@@ -42,14 +42,14 @@ def add(
 #         controller.remove_asset(symbol)
 #
 #
-# @app.command()
-# def list(symbol: Annotated[str, typer.Argument(help="Asset symbol")] = "all") -> None:
-#     with get_db_session() as db:
-#         controller = AssetController(db)
-#         if symbol == "all":
-#             controller.list_all_assets()
-#         else:
-#             controller.list_asset(symbol)
+@app.command()
+def list(symbol: Annotated[str, typer.Argument(help="Asset symbol")] = "all") -> None:
+    with get_db_session() as db:
+        controller = AssetController(db)
+        if symbol == "all":
+            controller.list_all_assets()
+        else:
+            controller.list_asset(symbol)
 
 
 if __name__ == "__main__":

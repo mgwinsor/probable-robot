@@ -41,13 +41,13 @@ class PortfolioManager:
     #         self.db.commit()
     #     return asset
     #
-    # def list_asset(self, symbol: str) -> Asset | None:
-    #     asset = self.db.query(Asset).filter(Asset.symbol == symbol).first()
-    #     return asset
-    #
-    # def list_all_assets(self):
-    #     assets = self.db.query(Asset).all()
-    #     return assets
+    def list_asset(self, symbol: str) -> Asset | None:
+        asset = self.db.query(Asset).filter(Asset.symbol == symbol).first()
+        return asset
+
+    def list_all_assets(self):
+        assets = self.db.query(Asset).all()
+        return assets
 
     # def transaction_add(
     #     self,

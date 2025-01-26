@@ -25,13 +25,13 @@ class AssetController:
     #     asset = self.portfolio.remove(symbol)
     #     self.view.show_asset_removed(asset, symbol)
     #
-    # def list_asset(self, symbol: str) -> None:
-    #     asset = self.portfolio.list_asset(symbol)
-    #     self.view.show_asset_listed(asset, symbol)
-    #
-    # def list_all_assets(self) -> None:
-    #     assets = self.portfolio.list_all_assets()
-    #     self.view.show_all_assets(assets)
+    def list_asset(self, symbol: str) -> None:
+        asset = self.portfolio.list_asset(symbol)
+        self.view.show_asset_listed(asset, symbol)
+
+    def list_all_assets(self) -> None:
+        assets = self.portfolio.list_all_assets()
+        self.view.show_all_assets(assets)
 
     # def add_transaction(
     #     self,

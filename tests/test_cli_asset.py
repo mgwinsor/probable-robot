@@ -43,6 +43,22 @@ def test_asset_add_decimal():
         assert asset.current_unit_price == 3013
 
 
+def test_asset_list_one():
+    _ = runner.invoke(app, ["asset", "add", "BTC", "Bitcoin", "18", "--price", "3000"])
+    result = runner.invoke(app, ["asset", "list", "BTC"])
+    assert result.exit_code == 0
+    assert "BTC" in result.stdout
+
+
+def test_asset_list_all():
+    _ = runner.invoke(app, ["asset", "add", "BTC", "Bitcoin", "18", "--price", "3000"])
+    _ = runner.invoke(app, ["asset", "add", "ETH", "Ethereum", "18", "--price", "1300"])
+    result = runner.invoke(app, ["asset", "list"])
+    assert result.exit_code == 0
+    assert "BTC" in result.stdout
+    assert "ETH" in result.stdout
+
+
 # def test_asset_remove():
 #     _ = runner.invoke(app, ["asset", "add", "BTC", "Bitcoin", "crypto"])
 #     result = runner.invoke(app, ["asset", "remove", "BTC"])
