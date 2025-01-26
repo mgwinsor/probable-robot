@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Optional
 
-from sqlalchemy import Integer, String
+from sqlalchemy import Integer, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.base import Base
@@ -17,6 +17,12 @@ class Asset(Base):
     name: Mapped[Optional[str]] = mapped_column(String)
     decimal_places: Mapped[int] = mapped_column(Integer, nullable=False)
     current_unit_price: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    updated_at: Mapped[int] = mapped_column(
+        Integer,
+        server_default=func.strftime("%s", "now"),
+        onupdate=func.strftime("%s", "now"),
+        nullable=True,
+    )
 
     # # Relationships
     # purchase_lots: Mapped[list["PurchaseLot"]] = relationship(back_populates="asset")
