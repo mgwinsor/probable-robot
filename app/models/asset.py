@@ -1,12 +1,12 @@
 from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy import Integer, String, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
 
 if TYPE_CHECKING:
-    pass
+    from app.models import PurchaseLot
 
 
 class Asset(Base):
@@ -24,8 +24,8 @@ class Asset(Base):
         nullable=True,
     )
 
-    # # Relationships
-    # purchase_lots: Mapped[list["PurchaseLot"]] = relationship(back_populates="asset")
+    # Relationships
+    purchase_lots: Mapped[list["PurchaseLot"]] = relationship(back_populates="asset")
     # income_events: Mapped[list["IncomeEvent"]] = relationship(back_populates="asset")
     # sales: Mapped[list["SalesPl"]] = relationship(back_populates="asset")
     # transfers: Mapped[list["WalletTransfer"]] = relationship(back_populates="asset")
