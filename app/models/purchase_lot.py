@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.models.base import Base
 
 if TYPE_CHECKING:
-    from app.models import Asset
+    from app.models.asset import Asset
 
 
 class PurchaseLot(Base):
@@ -41,7 +41,7 @@ class PurchaseLot(Base):
     # income_event_id: Mapped[int] = mapped_column(ForeignKey("income_events.event_id"))
 
     # Relationships
-    asset: Mapped["Asset"] = relationship(back_populates="purchase_lots")
+    asset: Mapped["Asset"] = relationship(back_populates="purchase_lots", lazy="joined")
     # income_events: Mapped[Optional["IncomeEvent"]] = relationship(
     #     back_populates="purchase_lots"
     # )
@@ -63,6 +63,11 @@ class PurchaseLot(Base):
         self._get_cost_basis()
 
     def _get_cost_basis(self):
+        if self.asset is None:
+            raise ValueError(
+                f"Asset not found for purchase_lot with asset_id: {self.asset_id}"
+            )
+
         standard_quantity = Decimal(self.quantity_base_units) / Decimal(
             10**self.asset.decimal_places
         )

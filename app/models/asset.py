@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.models.base import Base
 
 if TYPE_CHECKING:
-    from app.models import PurchaseLot
+    from app.models.purchase_lot import PurchaseLot
 
 
 class Asset(Base):

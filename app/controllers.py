@@ -37,23 +37,19 @@ class AssetController:
         asset = self.portfolio.update_asset(symbol, new_price)
         self.view.show_updated_asset(asset, symbol)
 
-    # def add_transaction(
-    #     self,
-    #     symbol: str,
-    #     lot_id: int,
-    #     transaction_type: TransactionType,
-    #     quantity: Decimal,
-    #     price_per_unit: Decimal,
-    #     fee: Decimal,
-    #     transaction_date: date,
-    # ) -> None:
-    #     transaction = self.portfolio.transaction_add(
-    #         symbol,
-    #         lot_id,
-    #         transaction_type,
-    #         quantity,
-    #         price_per_unit,
-    #         fee,
-    #         transaction_date,
-    #     )
-    #     self.view.show_transaction_added(transaction)
+    def add_transaction(
+        self,
+        symbol: str,
+        acquisition_date: str,
+        quantity: float,
+        cost_per_unit: float,
+        transaction_fee: float,
+    ) -> None:
+        transaction = self.portfolio.purchase_lot_add(
+            symbol,
+            acquisition_date,
+            quantity,
+            cost_per_unit,
+            transaction_fee,
+        )
+        self.view.show_transaction_added(transaction)

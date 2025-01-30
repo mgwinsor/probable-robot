@@ -3,6 +3,7 @@ from decimal import ROUND_HALF_UP, Decimal
 from sqlalchemy.orm import Session
 
 from app.models import Asset
+from app.models.purchase_lot import PurchaseLot
 
 
 class PortfolioManager:
@@ -62,28 +63,25 @@ class PortfolioManager:
     def _convert_price_decimal_to_int(self, price: Decimal) -> int:
         return int(price.quantize(Decimal("0.01"), ROUND_HALF_UP) * 100)
 
-    # def transaction_add(
-    #     self,
-    #     symbol,
-    #     lot_id,
-    #     transaction_type,
-    #     quantity,
-    #     price_per_unit,
-    #     fee,
-    #     transaction_date,
-    # ) -> Transaction:
-    #     asset = self.list_asset(symbol)
-    #     if asset is None:
-    #         raise ValueError(f"{symbol} not found in asset list.")
-    #
-    #     db_transaction = Transaction(
-    #         asset_id=asset.id,
-    #         lot_id=lot_id,
-    #         transaction_type=transaction_type,
-    #         quantity=quantity,
-    #         price_per_unit=price_per_unit,
-    #         fee=fee,
-    #         transaction_date=transaction_date,
-    #     )
-    #     self.db.add(db_transaction)
-    #     return db_transaction
+    def purchase_lot_add(
+        self,
+        symbol: str,
+        acquisition_date: str,
+        quantity: float,
+        cost_per_unit: float,
+        transaction_fee: float,
+    ) -> PurchaseLot:
+        asset = self.list_asset(symbol)
+        if asset is None:
+            raise ValueError(f"{symbol} not found in asset list.")
+
+        print(asset.asset_id)
+        db_transaction = PurchaseLot(
+            asset_id=asset.asset_id,
+            acquisition_date=acquisition_date,
+            quantity_base_units=quantity,
+            cost_per_unit=cost_per_unit,
+            transaction_fee=transaction_fee,
+        )
+        self.db.add(db_transaction)
+        return db_transaction
